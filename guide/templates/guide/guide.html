@@ -2,8 +2,14 @@
 
 {% block content %}
 
+<form action={% url 'upload' %} method="POST">
+{% csrf_token %}
+<button type="submit" class="btn btn-primary">Upload</button>
+</form>
+
 <form action={% url 'guide' %} method="POST">
 {% csrf_token %}
+<button type="submit" class="btn btn-primary">Get Answers</button>
 </form>
 
 {% endblock  %}

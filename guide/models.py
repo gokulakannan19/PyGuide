@@ -1,19 +1,12 @@
 from django.db import models
 
-# Create your models here.
-PURPOSE_CHOICES = {
-    ('get_answer', 'get_answer'),
-    ('submit_answer', 'submit_answer')
-}
-
 
 class Account(models.Model):
-    email = models.EmailField(default=True)
-    name = models.CharField(max_length=100, default=True)
-    purpose = models.CharField(
-        max_length=30, choices=PURPOSE_CHOICES, default=True)
+    email = models.EmailField(null=True)
+    name = models.CharField(max_length=100, null=True)
+    date_created = models.DateTimeField(auto_now=True)
 
 
 class Guide(models.Model):
-    question = models.TextField()
-    answer = models.TextField()
+    question = models.CharField(max_length=100)
+    answer = models.CharField(max_length=50)

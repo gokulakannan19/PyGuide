@@ -12,7 +12,7 @@ admin.site.register(Account, AccountAdmin)
 
 
 class GuideAdmin(admin.ModelAdmin):
-    list_display = ('question',)
+    list_display = ('question', 'answer')
 
 
 admin.site.register(Guide, GuideAdmin)
