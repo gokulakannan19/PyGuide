@@ -1,23 +1,25 @@
 import openpyxl
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .models import Account, Guide
 
 
 # Create your views here.
 
 
 def home(request):
+    return render(request, 'guide/home.html', {})
+
+
+def login(request):
     if request.method == 'POST':
         email = request.POST['input-email']
         name = request.POST['input-name']
-        print(email)
-        print(name)
-
-    else:
-        return render(request, 'guide/home.html', {})
-
+        Account.objects.create(email=email, name=name)
+    return redirect('guide')
 
 # fuction to extract data from spreadsheet and upload in DB
+
+
 def upload(request):
     # command to load the workbook
     work_book = openpyxl.load_workbook("MCQ.xlsx")
@@ -29,7 +31,7 @@ def upload(request):
     for page in work_book.sheetnames:
         # to work with the particular sheet
         sheet = work_book[page]
-        if count < 10:
+        if count < 11:
             print(sheet.title)
             count += 1
 
@@ -39,14 +41,26 @@ def upload(request):
                 # To check whether the first cell is not null
                 if sheet.cell(row, column=1).value != None:
                     try:
-
-                        # To extract data from a specific cell from the sheet and assigning it to a variable
                         cell = sheet.cell(row, column=2)
-                        print(cell.value.lstrip())
+                        question = cell.value.lstrip().lower()
+                        print(question)
+
+                        Guide.objects.create(question=question)
+
                     except Exception:
                         pass
     return render(request, "guide/upload.html")
 
 
 def guide(request):
-    return render(request, 'guide/guide.html', {})
+    if request.method == "POST":
+        question = request.POST.get('input-question')
+        print(question)
+
+        question = Guide.objects.get(question=question)
+        answer = question.answer
+        question = question.question
+
+        return render(request, 'guide/guide.html', {'question': question, 'answer': answer})
+    else:
+        return render(request, 'guide/guide.html', {})

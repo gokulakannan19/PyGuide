@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="container">
-    <form action="{% url 'guide' %}" method="POST">
+    <form action="{% url 'login' %}" method="POST">
     {% csrf_token %}
         <div class="form-group">
             <label for="input-email">Email address</label>
