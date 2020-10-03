@@ -80,6 +80,9 @@ def upload_answer(request):
                         print(answer)
                         print(s_no)
                         Answer.objects.create(s_no=s_no, answer=answer)
+                        question = Question.objects.get(s_no=s_no)
+                        question.answer = answer
+                        question.save()
 
                     except Exception:
                         pass
@@ -87,21 +90,6 @@ def upload_answer(request):
 
 
 def guide(request):
-
-    if request.method == "POST":
-        question = request.POST.get('input-question')
-        print(question)
-
-        question = Question.objects.get(question=question)
-        s_no = question.s_no
-        question = question.question
-
-        answer = Answer.objects.get(s_no=s_no)
-        answer = answer.answer
-
-        return render(request, 'guide/guide.html', {'question': question, 'answer': answer})
-    else:
-        pass
 
     questions = Question.objects.all()
     answers = Answer.objects.all()

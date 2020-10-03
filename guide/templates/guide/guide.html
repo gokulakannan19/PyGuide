@@ -2,35 +2,12 @@
 
 {% block content %}
 <div class="container">
-  <form action={% url 'upload_question' %} method="POST">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-primary">Upload Questions</button>
-  </form>
-  <form action={% url 'upload_answer' %} method="POST">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-primary">Upload Answers</button>
-  </form>
+<a href={% url 'upload_question'%}<button type="button" class="btn btn-danger btn-lg disabled" aria-disabled="true">Upload Questions</button></a>
+<a href={% url 'upload_answer'%}<button type="button" class="btn btn-danger btn-lg disabled" aria-disabled="true">Upload Answers</button></a>
 
-  </br>
-  <h2>Search your question here</h2>
-  <form action={% url 'guide' %} method="POST">
-    {% csrf_token %}
-    <div class="form-group">
-      <label for="input-question">Question</label>
-      <input type="text" class="form-control" id="input-question" name="input-question"
-        placeholder="Enter your question">
-    </div>
-    <button type="submit" class="btn btn-primary">Get Answer</button>
-  </form>
 
-  <div class="container-result">
-
-    <h3>{{question }}</h3>
-    <h6>{{ answer }}</h6>
-
-  </div>
-
-  <div class="container-list">
+ 
+<div class="container-list">
   
 <form method="get">
   {{ my_filter.form }}
@@ -42,6 +19,7 @@
     <tr>
       <th scope="col">#</th>
       <th scope="col">Questions</th>
+      <th scope="col">Answers</th>
     </tr>
   </thead>
   <tbody>
@@ -49,6 +27,7 @@
     <tr>
       <th scope="row">{{ question.s_no }}</th>
       <td>{{ question.question }}</td>
+      <td>{{ question.answer }}</td>
     </tr>
   {% endfor %}
   </tbody>
