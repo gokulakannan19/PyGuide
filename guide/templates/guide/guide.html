@@ -2,26 +2,57 @@
 
 {% block content %}
 <div class="container">
-<form action={% url 'upload' %} method="POST">
-{% csrf_token %}
-<button type="submit" class="btn btn-primary">Upload</button>
-</form>
-</br>
-<h2>Search your question here</h2>
-<form action={% url 'guide' %} method="POST">
-{% csrf_token %}
-  <div class="form-group">
-    <label for="input-question">Question</label>
-    <input type="text" class="form-control" id="input-question" name="input-question" placeholder="Enter your question">
-  </div>
-<button type="submit" class="btn btn-primary">Get Answer</button>
-</form>
+  <form action={% url 'upload_question' %} method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Upload Questions</button>
+  </form>
+  <form action={% url 'upload_answer' %} method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Upload Answers</button>
+  </form>
 
-<div class="container-result">
+  </br>
+  <h2>Search your question here</h2>
+  <form action={% url 'guide' %} method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="input-question">Question</label>
+      <input type="text" class="form-control" id="input-question" name="input-question"
+        placeholder="Enter your question">
+    </div>
+    <button type="submit" class="btn btn-primary">Get Answer</button>
+  </form>
+
+  <div class="container-result">
 
     <h3>{{question }}</h3>
-    <h4>{{ answer }}</h4>
+    <h6>{{ answer }}</h6>
 
-</div>
+  </div>
+
+  <div class="container-list">
+  
+<form method="get">
+  {{ my_filter.form }}
+  <button type="submit" class="btn btn-primary">Filter Result</button>
+</form>
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Questions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for question in questions %}
+    <tr>
+      <th scope="row">{{ question.s_no }}</th>
+      <td>{{ question.question }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+  </div>
 </div>
 {% endblock  %}

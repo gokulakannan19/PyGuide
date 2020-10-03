@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Account, Guide
+from .models import Account, Question, Answer
 
 # Register your models here.
 
@@ -11,8 +11,15 @@ class AccountAdmin(admin.ModelAdmin):
 admin.site.register(Account, AccountAdmin)
 
 
-class GuideAdmin(admin.ModelAdmin):
-    list_display = ('question', 'answer')
+class QuestionAdmin(admin.ModelAdmin):
+    list_display = ('question', 's_no')
 
 
-admin.site.register(Guide, GuideAdmin)
+admin.site.register(Question, QuestionAdmin)
+
+
+class AnswerAdmin(admin.ModelAdmin):
+    list_display = ('answer', 's_no')
+
+
+admin.site.register(Answer, AnswerAdmin)

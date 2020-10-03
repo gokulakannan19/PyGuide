@@ -7,9 +7,17 @@ class Account(models.Model):
     date_created = models.DateTimeField(auto_now=True)
 
 
-class Guide(models.Model):
+class Question(models.Model):
+    s_no = models.PositiveIntegerField(null=True)
     question = models.CharField(max_length=100)
-    answer = models.CharField(max_length=50)
 
     def __str__(self):
         return self.question
+
+
+class Answer(models.Model):
+    s_no = models.PositiveIntegerField(null=True)
+    answer = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.answer
