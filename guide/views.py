@@ -1,7 +1,7 @@
 import openpyxl
 from django.shortcuts import render, redirect
-from .models import Account, Question, Answer
-from .filters import QuestionFilter
+from .models import Account, LegalAspectsOfBusiness, CorporateAccounting, Answer
+from .filters import LegalAspectsofBusinessFilter, CorporateAccountingFilter
 
 
 # Create your views here.
@@ -15,12 +15,120 @@ def login(request):
         email = request.POST['input-email']
         name = request.POST['input-name']
         Account.objects.create(email=email, name=name)
-    return redirect('guide')
+    return redirect('subjects')
+
+
+def subjects(request):
+    return render(request, "guide/subjects.html")
+
+
+def legal_aspects_of_business(request):
+
+    questions = LegalAspectsOfBusiness.objects.all()
+    answers = Answer.objects.all()
+
+    my_filter = LegalAspectsOfBusinessFilter(request.GET, queryset=questions)
+    questions = my_filter.qs
+
+    context = {
+        'questions': questions,
+        'answers': answers,
+        'my_filter': my_filter,
+    }
+    return render(request, 'guide/legal_aspects_of_business.html', context)
+
+
+def corporate_accounting(request):
+    questions = CorporateAccounting.objects.all()
+    answers = Answer.objects.all()
+
+    my_filter = CorporateAccountingFilter(request.GET, queryset=questions)
+    questions = my_filter.qs
+
+    context = {
+        'questions': questions,
+        'answers': answers,
+        'my_filter': my_filter,
+    }
+
+    return render(request, 'guide/corporate_Accounting.html', context)
+
 
 # fuction to extract data from spreadsheet and upload in DB
+def corporate_accounting_questions(request):
+    # command to load the workbook
+    work_book = openpyxl.load_workbook("MCQ.xlsx")
+
+    # to keep track of the sheets
+
+    # iterating over the excel sheets
+    for page in work_book.sheetnames:
+        # to work with the particular sheet
+        sheet = work_book[page]
+        if sheet.title == "Page 27" or sheet.title == "Page 28" or sheet.title == "Page 29" or sheet.title == "Page 30" or sheet.title == "Page 31" or sheet.title == "Page 32" or sheet.title == "Page 33" or sheet.title == "Page 34" or sheet.title == "Page 35":
+            print(sheet.title)
+
+            # to iterate over the rows till the end of the sheet
+            for row in range(1, sheet.max_row+1):
+
+                # To check whether the first cell is not null
+                if sheet.cell(row, column=1).value != None:
+                    try:
+                        cell1 = sheet.cell(row, column=1)
+                        cell2 = sheet.cell(row, column=2)
+                        s_no = cell1.value
+                        question = cell2.value.lstrip().lower()
+                        print(s_no)
+                        print(question)
+
+                        CorporateAccounting.objects.create(
+                            s_no=s_no, question=question)
+
+                    except Exception:
+                        pass
+    return render(request, "guide/corporate_accounting_questions.html")
 
 
-def upload_question(request):
+def corporate_accounting_answers(request):
+    # command to load the workbook
+    work_book = openpyxl.load_workbook("MCQ.xlsx")
+
+    # to keep track of the sheets
+
+    # iterating over the excel sheets
+    for page in work_book.sheetnames:
+        # to work with the particular sheet
+        sheet = work_book[page]
+        if sheet.title == "Page 35" or sheet.title == "Page 36" or sheet.title == "Page 37" or sheet.title == "Page 37":
+            print(sheet.title)
+
+            # to iterate over the rows till the end of the sheet
+            for row in range(1, sheet.max_row+1):
+
+                # To check whether the first cell is not null
+                if sheet.cell(row, column=1).value != None:
+                    try:
+                        cell1 = sheet.cell(row, column=1)
+                        #cell2 = sheet.cell(row, column=2)
+                        s_no = cell1.value
+                        answer = s_no[4:]
+                        s_no = s_no[0:2]
+                        print(s_no)
+                        print(s_no[0:2])
+                        print(answer)
+
+                        Answer.objects.create(s_no=s_no, answer=answer)
+                        question = CorporateAccounting.objects.get(s_no=s_no)
+                        question.answer = answer
+                        question.save()
+
+                    except Exception:
+                        pass
+    return render(request, "guide/corporate_accounting_answers.html")
+
+
+# fuction to extract data from spreadsheet and upload in DB
+def legal_aspects_questions(request):
     # command to load the workbook
     work_book = openpyxl.load_workbook("MCQ.xlsx")
 
@@ -51,10 +159,10 @@ def upload_question(request):
 
                     except Exception:
                         pass
-    return render(request, "guide/upload_question.html")
+    return render(request, "guide/legal_aspects_questions.html")
 
 
-def upload_answer(request):
+def legal_aspects_answers(request):
     # command to load the workbook
     work_book = openpyxl.load_workbook("MCQ.xlsx")
 
@@ -86,20 +194,4 @@ def upload_answer(request):
 
                     except Exception:
                         pass
-    return render(request, "guide/upload_answer.html")
-
-
-def guide(request):
-
-    questions = Question.objects.all()
-    answers = Answer.objects.all()
-
-    my_filter = QuestionFilter(request.GET, queryset=questions)
-    questions = my_filter.qs
-
-    context = {
-        'questions': questions,
-        'answers': answers,
-        'my_filter': my_filter,
-    }
-    return render(request, 'guide/guide.html', context)
+    return render(request, "guide/legal_aspects_answers.html")

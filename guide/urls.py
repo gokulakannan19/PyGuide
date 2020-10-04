@@ -3,8 +3,19 @@ from .import views
 
 urlpatterns = [
     path('', views.home, name="home"),
+    path('subjects/', views.subjects, name="subjects"),
     path('login/', views.login, name="login"),
-    path('guide/', views.guide, name="guide"),
-    path('guide/upload_questions/', views.upload_question, name="upload_question"),
-    path('guide/upload_answers/', views.upload_answer, name="upload_answer")
+    path('subjects/legal_aspects_of_business/',
+         views.legal_aspects_of_business, name="legal_aspects_of_business"),
+    path('subjects/legal_aspects_of_business/legal_aspects_questions/',
+         views.legal_aspects_questions, name="legal_aspects_questions"),
+    path('subjects/legal_aspects_of_business/legal_aspects_answers/',
+         views.legal_aspects_answers, name="legal_aspects_answers"),
+    path('subjects/corporate_accounting/',
+         views.corporate_accounting, name="corporate_accounting"),
+    path('subjects/corporate_accounting/corporate_accounting_questions/',
+         views.corporate_accounting_questions, name="corporate_accounting_questions"),
+    path('subjects/corporate_accounting/corporate_accounting_answers/',
+         views.corporate_accounting_answers, name="corporate_accounting_answers"),
+
 ]

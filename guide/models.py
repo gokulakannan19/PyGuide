@@ -7,7 +7,16 @@ class Account(models.Model):
     date_created = models.DateTimeField(auto_now=True)
 
 
-class Question(models.Model):
+class LegalAspectsOfBusiness(models.Model):
+    s_no = models.PositiveIntegerField(null=True)
+    question = models.CharField(max_length=100)
+    answer = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return self.question
+
+
+class CorporateAccounting(models.Model):
     s_no = models.PositiveIntegerField(null=True)
     question = models.CharField(max_length=100)
     answer = models.CharField(max_length=100, null=True)

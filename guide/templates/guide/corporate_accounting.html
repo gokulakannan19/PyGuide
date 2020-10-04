@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+<form action={% url 'corporate_accounting_questions' %} method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Upload Questions</button>
+  </form>
+  <form action={% url 'corporate_accounting_answers' %} method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Upload Answers</button>
+  </form>
+</div>
+
+<div class="container-list">
+  
+<form method="get">
+  {{ my_filter.form }}
+  <button type="submit" class="btn btn-primary">Filter Result</button>
+</form>
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Questions</th>
+      <th scope="col">Answers</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for question in questions %}
+    <tr>
+      <th scope="row">{{ question.s_no }}</th>
+      <td>{{ question.question }}</td>
+      <td>{{ question.answer }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+  </div>
+</div>
+{% endblock  %}
