@@ -25,6 +25,15 @@ class CorporateAccounting(models.Model):
         return self.question
 
 
+class PersonnelManagement(models.Model):
+    s_no = models.PositiveIntegerField(null=True)
+    question = models.CharField(max_length=100)
+    answer = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return self.question
+
+
 class Answer(models.Model):
     s_no = models.PositiveIntegerField(null=True)
     answer = models.CharField(max_length=100)

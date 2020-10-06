@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Account, LegalAspectsOfBusiness, CorporateAccounting, Answer
+from .models import Account, LegalAspectsOfBusiness, CorporateAccounting, PersonnelManagement, Answer
 
 # Register your models here.
 
@@ -23,6 +23,13 @@ class CorporateAccountingAdmin(admin.ModelAdmin):
 
 
 admin.site.register(CorporateAccounting, CorporateAccountingAdmin)
+
+
+class PersonnelManagementAdmin(admin.ModelAdmin):
+    list_display = ('question', 's_no')
+
+
+admin.site.register(PersonnelManagement, PersonnelManagementAdmin)
 
 
 class AnswerAdmin(admin.ModelAdmin):

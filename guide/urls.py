@@ -17,5 +17,11 @@ urlpatterns = [
          views.corporate_accounting_questions, name="corporate_accounting_questions"),
     path('subjects/corporate_accounting/corporate_accounting_answers/',
          views.corporate_accounting_answers, name="corporate_accounting_answers"),
+    path('subjects/personnel_management/',
+         views.personnel_management, name="personnel_management"),
+    path('subjects/personnel_management/personnel_management_questions/',
+         views.personnel_management_questions, name="personnel_management_questions"),
+    path('subjects/personnel_management/personnel_management_answers/',
+         views.personnel_management_answers, name="personnel_management_answers"),
 
 ]

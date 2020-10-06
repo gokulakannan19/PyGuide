@@ -1,7 +1,7 @@
 import openpyxl
 from django.shortcuts import render, redirect
-from .models import Account, LegalAspectsOfBusiness, CorporateAccounting, Answer
-from .filters import LegalAspectsofBusinessFilter, CorporateAccountingFilter
+from .models import Account, LegalAspectsOfBusiness, CorporateAccounting, PersonnelManagement, Answer
+from .filters import LegalAspectsofBusinessFilter, CorporateAccountingFilter, PersonnelManagementFilter
 
 
 # Create your views here.
@@ -52,6 +52,22 @@ def corporate_accounting(request):
     }
 
     return render(request, 'guide/corporate_Accounting.html', context)
+
+
+def personnel_management(request):
+    questions = PersonnelManagement.objects.all()
+    answers = Answer.objects.all()
+
+    my_filter = PersonnelManagementFilter(request.GET, queryset=questions)
+    questions = my_filter.qs
+
+    context = {
+        'questions': questions,
+        'answers': answers,
+        'my_filter': my_filter,
+    }
+
+    return render(request, 'guide/personnel_management.html', context)
 
 
 # fuction to extract data from spreadsheet and upload in DB
@@ -109,7 +125,7 @@ def corporate_accounting_answers(request):
                 if sheet.cell(row, column=1).value != None:
                     try:
                         cell1 = sheet.cell(row, column=1)
-                        #cell2 = sheet.cell(row, column=2)
+                        # cell2 = sheet.cell(row, column=2)
                         s_no = cell1.value
                         answer = s_no[4:]
                         s_no = s_no[0:2]
@@ -195,3 +211,82 @@ def legal_aspects_answers(request):
                     except Exception:
                         pass
     return render(request, "guide/legal_aspects_answers.html")
+
+
+def personnel_management_questions(request):
+    # command to load the workbook
+    work_book = openpyxl.load_workbook("MCQ.xlsx")
+
+    # to keep track of the sheets
+
+    # iterating over the excel sheets
+    for page in work_book.sheetnames:
+        # to work with the particular sheet
+        sheet = work_book[page]
+        if sheet.title == "Page 48":
+            # or sheet.title == "Page 49" or sheet.title == "Page 50" or sheet.title == "Page 51" or sheet.title == "Page 52" or sheet.title == "Page 53" or sheet.title == "Page 54" or sheet.title == "Page 55" or sheet.title == "Page 56" or sheet.title == "Page 57" or sheet.title == "Page 58" or sheet.title == "Page 59":
+            print(sheet.title)
+
+            # to iterate over the rows till the end of the sheet
+            for row in range(1, sheet.max_row+1):
+
+                # To check whether the first cell is not null
+                if sheet.cell(row, column=1).value != None:
+                    try:
+                        cell1 = sheet.cell(row, column=1)
+                        # cell2 = sheet.cell(row, column=2)
+                        # s_no = cell1.value
+                        # question = cell2.value.lstrip().lower()
+                        # print(s_no)
+                        # print(question)
+                        s_no = cell1.value
+                        if s_no[0] == "1" or s_no[0] == "2" or s_no[0] == "3" or s_no[0] == "4" or s_no[0] == "5" or s_no[0] == "6" or s_no[0] == "7" or s_no[0] == "8" or s_no[0] == "9":
+                            question = s_no[3:].lstrip().lower()
+                            s_no = s_no[0:1]
+                            print(s_no)
+                            print(question)
+
+                            PersonnelManagement.objects.create(
+                                s_no=s_no, question=question)
+                    except Exception:
+                        pass
+    return render(request, "guide/personnel_management_questions.html")
+
+
+def personnel_management_answers(request):
+    # command to load the workbook
+    work_book = openpyxl.load_workbook("MCQ.xlsx")
+
+    # to keep track of the sheets
+
+    # iterating over the excel sheets
+    for page in work_book.sheetnames:
+        # to work with the particular sheet
+        sheet = work_book[page]
+        if sheet.title == "Page 60" or sheet.title == "Page 61" or sheet.title == "Page 62":
+            # or sheet.title == "Page 51":
+            print(sheet.title)
+
+         # to iterate over the rows till the end of the sheet
+            for row in range(1, sheet.max_row+1):
+
+                # To check whether the first cell is not null
+                if sheet.cell(row, column=1).value != None:
+                    try:
+                        cell1 = sheet.cell(row, column=1)
+                        # cell2 = sheet.cell(row, column=2)
+                        s_no = cell1.value
+                        answer = s_no[4:]
+                        s_no = s_no[0:2]
+                        print(s_no)
+                        print(s_no[0:2])
+                        print(answer)
+
+                        Answer.objects.create(s_no=s_no, answer=answer)
+                        question = PersonnelManagement.objects.get(s_no=s_no)
+                        question.answer = answer
+                        question.save()
+
+                    except Exception:
+                        pass
+    return render(request, "guide/personnel_management_answers.html")
