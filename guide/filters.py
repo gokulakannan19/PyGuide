@@ -1,6 +1,6 @@
 import django_filters
 from django_filters import CharFilter
-from .models import LegalAspectsOfBusiness, CorporateAccounting, PersonnelManagement, Answer
+from .models import LegalAspectsOfBusiness, CorporateAccounting, PersonnelManagement, IncomeTax, AdvertisementAndSalesmanhip, Answer
 
 
 class LegalAspectsofBusinessFilter(django_filters.FilterSet):
@@ -24,4 +24,20 @@ class PersonnelManagementFilter(django_filters.FilterSet):
 
     class Meta:
         model = PersonnelManagement
+        fields = "__all__"
+
+
+class IncomeTaxFilter(django_filters.FilterSet):
+    question = CharFilter(field_name="question", lookup_expr='icontains')
+
+    class Meta:
+        model = IncomeTax
+        fields = "__all__"
+
+
+class AdvertisementAndSalesmanshipFilter(django_filters.FilterSet):
+    question = CharFilter(field_name="question", lookup_expr='icontains')
+
+    class Meta:
+        model = AdvertisementAndSalesmanhip
         fields = "__all__"

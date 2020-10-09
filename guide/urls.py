@@ -23,5 +23,17 @@ urlpatterns = [
          views.personnel_management_questions, name="personnel_management_questions"),
     path('subjects/personnel_management/personnel_management_answers/',
          views.personnel_management_answers, name="personnel_management_answers"),
+    path('subjects/income_tax/',
+         views.income_tax, name="income_tax"),
+    path('subjects/income_tax/income_tax_questions/',
+         views.income_tax_questions, name="income_tax_questions"),
+    path('subjects/income_tax/income_tax_answers/',
+         views.income_tax_answers, name="income_tax_answers"),
+    path('subjects/advertisement_and_salesmanship/',
+         views.advertisement_and_salesmanship, name="advertisement_and_salesmanship"),
+    path('subjects/advertisement_and_salesmanship/advertisement_and_salesmanship_questions/',
+         views.advertisement_and_salesmanship_questions, name="advertisement_and_salesmanship_questions"),
+    path('subjects/advertisement_and_salesmanship/advertisement_and_salesmanship_answers/',
+         views.advertisement_and_salesmanship_answers, name="advertisement_and_salesmanship_answers"),
 
 ]

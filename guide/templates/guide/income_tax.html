@@ -2,11 +2,16 @@
 
 {% block content %}
 <div class="container">
-<a href={% url 'legal_aspects_questions.html'%}<button type="button" class="btn btn-danger btn-lg disabled" aria-disabled="true">Upload Questions</button></a>
-<a href={% url 'legal_aspects_answers.html'%}<button type="button" class="btn btn-danger btn-lg disabled" aria-disabled="true">Upload Answers</button></a>
+<form action={% url 'income_tax_questions' %} method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Upload Questions</button>
+  </form>
+  <form action={% url 'income_tax_answers' %} method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Upload Answers</button>
+  </form>
+</div>
 
-
- 
 <div class="container-list">
   
 <form method="get">
